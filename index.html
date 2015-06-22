@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    
+    <title>Bowling app</title>
+    
+    <link rel="stylesheet" href="bowling.css" />
+    
+    <script src="bowling.js"></script>
+    
+  </head>
+  
+  <body>
+    
+    <h1>Bowling app</h1>
+    
+    <!-- The score board template -->
+    <div id="board">
+      
+      <h2 class="player"></h2>
+      
+      <ul class="frames">
+        <li class="frame">
+          <ul class="rolls">
+            <li class="roll">
+            </li>
+            <li class="roll">
+            </li>
+          </ul>
+          <div class="score">&nbsp;</div>
+        </li>
+      </ul>
+      
+      <div class="enter_score">
+        <input type="number" id="enter_score" placeholder="Enter points"></input>
+      </div>
+      
+    </div>
+    
+    <script>
+      var bowling_game_1 = new BowlingGame('#board', ['Marge', 'Homer', 'Lisa', 'Bart']);
+    </script>
+    
+  </body>
+  
+</html>

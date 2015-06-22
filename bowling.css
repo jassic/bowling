@@ -1,0 +1,60 @@
+body {
+  font-size: 20px;
+  font-family: Arial;
+  line-height: 1.5em;
+}
+
+h2.player {
+  margin: 1em 0 0.25em 0;
+}
+
+ul.frames {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li.frame {
+  display: inline-block;
+  border: solid 1px gray;
+  width: 3.5em;
+  margin: 0;
+  padding: 0.5em;
+  border-collapse: collapse;
+}
+
+li.frame.current {
+  background: #FFFF99;
+}
+
+ul.rolls {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+li.roll {
+  display: inline-block;
+  width: 45%;
+  border-collapse: collapse;
+}
+
+div.score {
+  width: 100%;
+  text-align: center;
+  border: solid 1px gray;
+}
+
+div.enter_score {
+  text-align: center;
+}
+
+div.enter_score input {
+  border: solid 1px gray;
+  outline: none;
+  padding: 1em;
+  width: 7em;
+  text-align: center;
+  font-size: 1em;
+}
