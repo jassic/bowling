@@ -155,8 +155,13 @@ var BowlingGameView = function(selector, bowling_game) {
           
           // Roll 2
           
+          // Strike
+          if (_frame.rolls[0].score == 10 && _frame.rolls[1].score == 10) {
+            this.players[i].frames[j].rolls[1].innerHTML = "X";
+          }
+          
           // Spare
-          if (_frame.rolls[1].score && (_frame.rolls[0].score + _frame.rolls[1].score == 10)) {
+          else if (_frame.rolls[1].score && (_frame.rolls[0].score + _frame.rolls[1].score == 10)) {
             this.players[i].frames[j].rolls[1].innerHTML = "/";
           }
           
