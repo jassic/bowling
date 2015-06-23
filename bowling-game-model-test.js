@@ -26,7 +26,7 @@
   // Test helper
   var it_should = function(title, test_method) {
     
-    bowling_game = new BowlingGame(players);
+    bowling_game = new BowlingGameModel(players);
     player = bowling_game.players[0];
     frame = player.frames[0];
     roll = frame.rolls[0];
@@ -47,9 +47,9 @@
   console.log("Testing...");
   
   /*
-    BowlingGame
+    BowlingGameModel
   */
-  var BowlingGameTest = function() {
+  var BowlingGameModelTest = function() {
     
     /*
       new()
@@ -244,7 +244,7 @@
     });
     
     it_should("return true for the last frame", function() {
-      return player.frames[BowlingGame.MAX_FRAMES-1].is_last();
+      return player.frames[BowlingGameModel.NUMBER_OF_FRAMES - 1].is_last();
     });
   
     /*
@@ -297,7 +297,7 @@
     });
     
     it_should("return null if the last frame has been reached", function() {
-      frame = player.frames[BowlingGame.MAX_FRAMES-1]
+      frame = player.frames[BowlingGameModel.NUMBER_OF_FRAMES - 1]
       return frame.next_frame() == null;
     });
     
