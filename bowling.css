@@ -1,11 +1,15 @@
 body {
-  font-size: 20px;
+  font-size: 16px;
   font-family: Arial;
   line-height: 1.5em;
 }
 
 h2.player {
   margin: 1em 0 0.25em 0;
+}
+
+h2.player.winner {
+  color: green;
 }
 
 ul.frames {
@@ -17,7 +21,7 @@ ul.frames {
 li.frame {
   display: inline-block;
   border: solid 1px gray;
-  width: 3.5em;
+  width: 5em;
   margin: 0;
   padding: 0.5em;
   border-collapse: collapse;
@@ -36,8 +40,9 @@ ul.rolls {
 
 li.roll {
   display: inline-block;
-  width: 45%;
+  width: 30%;
   border-collapse: collapse;
+  text-align: center;
 }
 
 div.score {
@@ -57,4 +62,21 @@ div.enter_score input {
   width: 7em;
   text-align: center;
   font-size: 1em;
+}
+
+.demo {
+  margin: 1em 0 0 0;
+  width: 100%;
+  text-align: center;
+}
+
+#demo {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  padding: 1em;
+  font-size: 1em;
+  border: solid 1px gray;
+  background: #efefef;
+  cursor: pointer;
 }

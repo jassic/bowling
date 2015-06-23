@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="bowling.css" />
     
     <script src="bowling.js"></script>
+    <script src="bowling-test.js"></script>
     
   </head>
   
@@ -25,8 +26,6 @@
           <ul class="rolls">
             <li class="roll">
             </li>
-            <li class="roll">
-            </li>
           </ul>
           <div class="score">&nbsp;</div>
         </li>
@@ -36,10 +35,15 @@
         <input type="number" id="enter_score" placeholder="Enter points"></input>
       </div>
       
+      <div class="demo">
+        <input type="submit" id="demo" value="Run demo"></input>
+      </div>
+      
     </div>
     
     <script>
-      var bowling_game_1 = new BowlingGame('#board', ['Marge', 'Homer', 'Lisa', 'Bart']);
+      var players = ['Marge', 'Homer', 'Lisa', 'Bart'];
+      var bowling_game_1 = new BowlingGame(players, '#board');
     </script>
     
   </body>
