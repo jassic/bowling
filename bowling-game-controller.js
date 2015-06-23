@@ -1,31 +1,51 @@
-var BowlingGameController = function(model, view) {
+var BABBEL = BABBEL || {};
+
+// class BowlingGameController
+BABBEL.BowlingGameController = (function() {
   
-  /*
-    CONSTRUCTOR
-  */
+  // Constructor
+  function BowlingGameController(model, view) {
+    
+    this.model = model;
+    
+    this.view = view;
+    
+    this.init();
+    
+  }
   
-  this.model = model;
+  // Initialize
+  BowlingGameController.prototype.init = function() {
+    
+    // Focus input
+    this.view.input.focus();
+    
+    // Bind elements
+    this.bind();
+    
+  }
   
-  this.view = view;
+  // Bind elements
+  BowlingGameController.prototype.bind = function() {
+    
+    // Bind input text field
+    this.view.input.onkeyup = function(view) {
+      return function(e) {
+        view.score_entered(e);
+        view.render();
+      };
+    }(this.view);
+    
+    // Bind demo button
+    this.view.demo.onclick = function(view) {
+      return function(e) {
+        view.bowling_game.run();
+        view.render();
+      };
+    }(this.view);
+    
+  }
   
-  // Focus input
-  this.view.input.focus();
+  return BowlingGameController;
   
-  /*
-    EVENT BINDING
-  */
-  this.view.input.onkeyup = function(view) {
-    return function(e) {
-      view.score_entered(e);
-      view.render();
-    };
-  }(this.view);
-  
-  this.view.demo.onclick = function(view) {
-    return function(e) {
-      view.bowling_game.run();
-      view.render();
-    };
-  }(this.view);
-  
-}
+})();

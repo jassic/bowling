@@ -1,61 +1,63 @@
+var BABBEL = BABBEL || {};
+
 // class BowlingGameModel
-var BowlingGameModel = function(player_names) {
+BABBEL.BowlingGameModel = (function() {
   
-  // The number of frames
-  BowlingGameModel.NUMBER_OF_FRAMES = 10;
-  
-  /*
-    PROPERTIES
-  */
-  
-  // The participating players
-  this.players = [];
-  
-  // The current player
-  this.current_player = null;
-  
-  // The current frame
-  this.current_frame = null;
-  
-  // The current roll
-  this.current_roll = null;
-  
-  // Has the game been finished?
-  this.finished = false;
-  
-  /*
-    CONSTRUCTOR
-  */
-  
-  // Add participating players
-  for (var i = 0; i < player_names.length; i++) {
+  // Constructor
+  function BowlingGameModel(player_names) {
     
-    var player = new Player(player_names[i], this)
+    // The number of frames
+    BowlingGameModel.NUMBER_OF_FRAMES = 10;
     
-    this.players.push(player);
+    // The participating players
+    this.players = [];
     
-    // Generate 10 frames for each player
-    for (var j = 0; j < BowlingGameModel.NUMBER_OF_FRAMES; j++) {
-      
-      // Create frame
-      var frame = new Frame(player);
-      player.frames.push(frame);
-      
-    }
+    // The current player
+    this.current_player = null;
+    
+    // The current frame
+    this.current_frame = null;
+    
+    // The current roll
+    this.current_roll = null;
+    
+    // Has the game been finished?
+    this.finished = false;
+    
+    this.init(player_names);
     
   }
   
-  // Set pointer to the first player / frame / roll
-  this.current_player = this.players[0];
-  this.current_frame = this.current_player.frames[0];
-  this.current_roll = this.current_frame.rolls[0];
-  
-  /*
-    METHODS
-  */
+  // Initialize
+  BowlingGameModel.prototype.init = function(player_names) {
+    
+    // Add participating players
+    for (var i = 0; i < player_names.length; i++) {
+      
+      var player = new BABBEL.Player(player_names[i], this)
+      
+      this.players.push(player);
+      
+      // Generate 10 frames for each player
+      for (var j = 0; j < BowlingGameModel.NUMBER_OF_FRAMES; j++) {
+        
+        // Create frame
+        var frame = new BABBEL.Frame(player);
+        player.frames.push(frame);
+        
+      }
+      
+    }
+    
+    // Set pointer to the first player / frame / roll
+    this.current_player = this.players[0];
+    this.current_frame = this.current_player.frames[0];
+    this.current_roll = this.current_frame.rolls[0];
+    
+  }
   
   // Validates a score
-  this.validate = function(score) {
+  BowlingGameModel.prototype.validate = function(score) {
     
     // Do not allow non-numerical values
     if (isNaN(score)) {
@@ -107,7 +109,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Sets the score for the current player
-  this.set_score = function(score) {
+  BowlingGameModel.prototype.set_score = function(score) {
     
     // Check if the game has been finished
     if (this.finished) {
@@ -133,7 +135,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Turns to the next roll / frame / player
-  this.next = function() {
+  BowlingGameModel.prototype.next = function() {
     
     var current_roll = this.current_roll.index();
     var current_player = this.current_player.index();
@@ -241,7 +243,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Returns the winner of the game
-  this.winner = function() {
+  BowlingGameModel.prototype.winner = function() {
     
     if (this.finished) {
       
@@ -263,7 +265,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Randomly throw a roll
-  this.roll = function() {
+  BowlingGameModel.prototype.roll = function() {
     
     var min = 0;
     var max = 10;
@@ -278,7 +280,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Randomly throw a roll
-  this.run = function() {
+  BowlingGameModel.prototype.run = function() {
     
     this.reset();
     
@@ -291,7 +293,7 @@ var BowlingGameModel = function(player_names) {
   }
   
   // Resets the game
-  this.reset = function() {
+  BowlingGameModel.prototype.reset = function() {
     
     // Reset all scores
     for (var i = 0; i < this.players.length; i++) {
@@ -313,35 +315,34 @@ var BowlingGameModel = function(player_names) {
     
   }
   
-}
+  return BowlingGameModel;
+  
+})();
 
 // class Player
-var Player = function(name, bowling_game) {
+BABBEL.Player = (function() {
   
-  /*
-    PROPERTIES
-  */
+  // Constructor
+  function Player(name, bowling_game) {
+  
+    // The player's name
+    this.name = name;
+  
+    // The player's frames
+    this.frames = [];
+  
+    // The game reference
+    this.bowling_game = bowling_game;
     
-  // The player's name
-  this.name = name;
-  
-  // The player's frames
-  this.frames = [];
-  
-  // The game reference
-  this.bowling_game = bowling_game;
-  
-  /*
-    METHODS
-  */
-  
-  // The player's index
-  this.index = function() {
-    return this.bowling_game.players.indexOf(this);
   }
   
+  // The player's index
+  Player.prototype.index = function() {
+    return this.bowling_game.players.indexOf(this);
+  }
+
   // The player's total score
-  this.score = function() {
+  Player.prototype.score = function() {
     var score = 0;
     for (var i = 0; i < this.frames.length; i++) {
       score += this.frames[i].score();
@@ -349,128 +350,131 @@ var Player = function(name, bowling_game) {
     return score;
   }
   
-}
+  return Player;
+  
+})();
 
 // class Frame
-var Frame = function(player) {
+BABBEL.Frame = (function() {
   
-  /*
-    PROPERTIES
-  */
-  
-  // The frame's rolls
-  this.rolls = [];
-  
-  // The player reference
-  this.player = player;
-  
-  /*
-    CONSTRUCTOR
-  */
-  
-  // Add rolls
-  for (var i = 0; i < 2; i++) {
-    this.rolls.push(new Roll(this));
+  // Constructor
+  function Frame(player) {
+    
+    // The frame's rolls
+    this.rolls = [];
+    
+    // The player reference
+    this.player = player;
+    
+    this.init();
+    
   }
   
-  /*
-    METHODS
-  */
+  // Initialize
+  Frame.prototype.init = function() {
+    
+    // Add rolls
+    for (var i = 0; i < 2; i++) {
+      this.rolls.push(new BABBEL.Roll(this));
+    }
+    
+  }
   
   // Adds an extra roll
-  this.add_roll = function() {
-    this.rolls.push(new Roll(this));
+  Frame.prototype.add_roll = function() {
+    this.rolls.push(new BABBEL.Roll(this));
   }
-  
+
   // The frames' index
-  this.index = function() {
+  Frame.prototype.index = function() {
     return this.player.frames.indexOf(this);
   }
-  
+
   // Returns true if this is the last frame
-  this.is_last = function() {
-    return this.index() == BowlingGameModel.NUMBER_OF_FRAMES - 1;
+  Frame.prototype.is_last = function() {
+    return this.index() == BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1;
   }
-  
+
   // Scored a strike?
-  this.strike = function() {
+  Frame.prototype.strike = function() {
     return this.rolls[0].score == 10;
   }
-  
+
   // Scored a spare?
-  this.spare = function() {
+  Frame.prototype.spare = function() {
     return (this.rolls[0].score < 10) && (this.rolls[0].score + this.rolls[1].score == 10);
   }
-  
+
   // Returns the next frame
-  this.next_frame = function() {
-    if (this.index() < BowlingGameModel.NUMBER_OF_FRAMES - 1) {
+  Frame.prototype.next_frame = function() {
+    if (this.index() < BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1) {
       return this.player.frames[this.index() + 1];
     } else {
       return null;
     }
   }
-  
+
   // Returns the frame score
-  this.score = function() {
-    
+  Frame.prototype.score = function() {
+  
     var score = this.rolls[0].score + this.rolls[1].score;
-    
+  
     // Last frame
     if (this.is_last()) {
-      
+    
       if (this.rolls[2]) {
         score += this.rolls[2].score;
       }
-      
-    }
     
+    }
+  
     // Regular frame
     else {
-      
+    
       if (this.spare()) {
         score = score + this.next_frame().rolls[0].score;
       }
-      
+    
       else if (this.strike()) {
-        
+      
         if (this.next_frame().is_last()) {
           score = score + this.next_frame().rolls[0].score + this.next_frame().rolls[1].score;
         } else {
           score = score + this.next_frame().score();
         }
-        
-      }
       
-    }
+      }
     
+    }
+  
     // The max possible score is 30
     return Math.min(score, 30);
+  
+  }
+  
+  return Frame;
+  
+})();
+
+// class Roll
+BABBEL.Roll = (function() {
+  
+  // Constructor
+  function Roll(frame) {
+    
+    // The roll's score
+    this.score = null;
+    
+    // The frame reference
+    this.frame = frame;
     
   }
   
-}
-
-// class Roll
-var Roll = function(frame) {
-  
-  /*
-    PROPERTIES
-  */
-  
-  // The roll's score
-  this.score = null;
-  
-  // The frame reference
-  this.frame = frame;
-  
-  /*
-    METHODS
-  */
-  
   // The roll's index
-  this.index = function() {
+  Roll.prototype.index = function() {
     return this.frame.rolls.indexOf(this);
   }
   
-}
+  return Roll;
+  
+})();

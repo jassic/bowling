@@ -1,103 +1,103 @@
-/*
-  VIEW
-*/
-var BowlingGameView = function(selector, bowling_game) {
+var BABBEL = BABBEL || {};
+
+// class BowlingGameView
+BABBEL.BowlingGameView = (function() {
   
-  /*
-    PROPERTIES
-  */
-  
-  // A reference to the model
-  this.bowling_game = bowling_game;
-  
-  // The score board element
-  this.element = document.querySelector(selector);
-  
-  // The demo button
-  this.demo = this.element.querySelector('#demo');
-  
-  // The view representation of each player
-  this.players = [];
-  
-  // The input field for entering scores
-  this.input = this.element.querySelector('#enter_score');
-  
-  /*
-    CONSTRUCTOR
-  */
-  
-  if (!this.element) {
-    throw "Element not found";
+  // Constructor
+  function BowlingGameView(selector, bowling_game) {
+    
+    // A reference to the model
+    this.bowling_game = bowling_game;
+    
+    // The score board element
+    this.element = document.querySelector(selector);
+    
+    // The demo button
+    this.demo = this.element.querySelector('#demo');
+    
+    // The view representation of each player
+    this.players = [];
+    
+    // The input field for entering scores
+    this.input = this.element.querySelector('#enter_score');
+    
+    this.init();
+    
   }
   
-  // Use the existing HTML code as a template for 10 frames
-  var player_template = this.element.querySelector(".player");
-  var frame_template = this.element.querySelector(".frame");
-  var roll_template = this.element.querySelector(".roll");
-  
-  // Generate score board HTML
-  for (var p = 0; p < this.bowling_game.players.length; p++) {
+  // Initialize
+  BowlingGameView.prototype.init = function() {
     
-    // Use the generated HTML code as a template for each player
-    var player = player_template.cloneNode();
-    
-    // The view representation of each frame
-    player.frames = [];
-    
-    // Add view representation of players
-    this.players.push(player);
-    
-    // Insert and append player name
-    player.innerHTML = this.bowling_game.players[p].name;
-    this.element.appendChild(player);
-    
-    // Append frames
-    var frames_container = this.element.querySelector('.frames').cloneNode();
-    this.element.appendChild(frames_container);
-    
-    // Generate 10 frames for each player
-    for (var i = 0; i < BowlingGameModel.NUMBER_OF_FRAMES; i++) {
-      
-      // Create frame
-      var frame = frame_template.cloneNode(true);
-      
-      // Add second roll
-      frame.querySelector('.rolls').appendChild(roll_template.cloneNode());
-      
-      // Add additional third roll for the last frame
-      if (i == BowlingGameModel.NUMBER_OF_FRAMES - 1) {
-        frame.querySelector('.rolls').appendChild(roll_template.cloneNode());
-      }
-      
-      frames_container.appendChild(frame);
-      
-      // Add frame representation
-      player.frames.push(frame);
-      
-      // The view representation of the frame's total score
-      frame.score = frame.querySelector('.score');
-      
-      // The view representation of each roll
-      frame.rolls = frame.querySelectorAll('.roll');
-      
-      // Add a spacer for even spacing between the frames
-      var spacer = document.createTextNode(" ");
-      frames_container.appendChild(spacer);
-      
+    if (!this.element) {
+      throw "Element not found";
     }
     
+    // Use the existing HTML code as a template for 10 frames
+    var player_template = this.element.querySelector(".player");
+    var frame_template = this.element.querySelector(".frame");
+    var roll_template = this.element.querySelector(".roll");
+    
+    // Generate score board HTML
+    for (var p = 0; p < this.bowling_game.players.length; p++) {
+      
+      // Use the generated HTML code as a template for each player
+      var player = player_template.cloneNode();
+      
+      // The view representation of each frame
+      player.frames = [];
+      
+      // Add view representation of players
+      this.players.push(player);
+      
+      // Insert and append player name
+      player.innerHTML = this.bowling_game.players[p].name;
+      this.element.appendChild(player);
+      
+      // Append frames
+      var frames_container = this.element.querySelector('.frames').cloneNode();
+      this.element.appendChild(frames_container);
+      
+      // Generate 10 frames for each player
+      for (var i = 0; i < BABBEL.BowlingGameModel.NUMBER_OF_FRAMES; i++) {
+        
+        // Create frame
+        var frame = frame_template.cloneNode(true);
+        
+        // Add second roll
+        frame.querySelector('.rolls').appendChild(roll_template.cloneNode());
+        
+        // Add additional third roll for the last frame
+        if (i == BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1) {
+          frame.querySelector('.rolls').appendChild(roll_template.cloneNode());
+        }
+      
+        frames_container.appendChild(frame);
+      
+        // Add frame representation
+        player.frames.push(frame);
+      
+        // The view representation of the frame's total score
+        frame.score = frame.querySelector('.score');
+      
+        // The view representation of each roll
+        frame.rolls = frame.querySelectorAll('.roll');
+      
+        // Add a spacer for even spacing between the frames
+        var spacer = document.createTextNode(" ");
+        frames_container.appendChild(spacer);
+      
+      }
+    
+    }
+    
+    // Remove templates from DOM
+    this.element.removeChild(frame_template.parentNode);
+    this.element.removeChild(player_template);
+    
   }
   
-  // Remove templates from DOM
-  this.element.removeChild(frame_template.parentNode);
-  this.element.removeChild(player_template);
-  
-  /*
-    METHODS
-  */
-  
   // Renders the view
-  this.render = function() {
+  BowlingGameView.prototype.render = function() {
     
     // Update scores
     for (var i = 0; i < this.bowling_game.players.length; i++) {
@@ -109,7 +109,7 @@ var BowlingGameView = function(selector, bowling_game) {
         var _frame = _player.frames[j];
         
         // Regular round
-        if (j < BowlingGameModel.NUMBER_OF_FRAMES - 1) {
+        if (j < BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1) {
           
           if (_frame.strike()) {
             this.players[i].frames[j].rolls[0].innerHTML = "X";
@@ -229,7 +229,7 @@ var BowlingGameView = function(selector, bowling_game) {
   }
   
   // Event handler for changes to the score input field
-  this.score_entered = function(e) {
+  BowlingGameView.prototype.score_entered = function(e) {
     
     // Parse input value
     var score = parseInt(e.target.value);
@@ -261,4 +261,7 @@ var BowlingGameView = function(selector, bowling_game) {
     
   }
   
-}
+  return BowlingGameView;
+  
+})();
+  

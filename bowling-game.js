@@ -1,12 +1,17 @@
+var BABBEL = BABBEL || {};
+
 // class BowlingGame
-var BowlingGame = function(player_names, selector) {
+BABBEL.BowlingGame = (function() {
   
-  /*
-    CONSTRUCTOR
-  */
+  // Constructor
+  function BowlingGame(player_names, selector) {
+    
+    this.model = new BABBEL.BowlingGameModel(player_names);
+    this.view = new BABBEL.BowlingGameView(selector, this.model);
+    this.controller = new BABBEL.BowlingGameController(this.model, this.view);
+    
+  }
   
-  this.model = new BowlingGameModel(player_names);
-  this.view = new BowlingGameView(selector, this.model);
-  this.controller = new BowlingGameController(this.model, this.view);
+  return BowlingGame;
   
-}
+})();
