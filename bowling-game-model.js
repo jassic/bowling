@@ -68,7 +68,7 @@ BABBEL.BowlingGameModel = (function() {
   BowlingGameModel.prototype.validate = function(score) {
 
     var previous_score;
-    
+
     // Do not allow non-numerical values
     if (isNaN(score)) {
       score = null;
@@ -86,7 +86,7 @@ BABBEL.BowlingGameModel = (function() {
 
         // The max total score in roll 2 is 10 points
         previous_score = this.current_frame.rolls[0].score;
-        
+
         if (previous_score + score > 10) {
           score = 10 - previous_score;
         }
@@ -359,17 +359,17 @@ BABBEL.Player = (function() {
 
   // The player's total score
   Player.prototype.score = function() {
-    
+
     var score, i;
-    
+
     score = 0;
-    
+
     for (i = 0; i < this.frames.length; i++) {
       score += this.frames[i].score();
     }
-    
+
     return score;
-    
+
   };
 
   return Player;
@@ -398,7 +398,7 @@ BABBEL.Frame = (function() {
   Frame.prototype.init = function() {
 
     var i;
-    
+
     // Add rolls
     for (i = 0; i < 2; i++) {
       this.rolls.push(new BABBEL.Roll(this));

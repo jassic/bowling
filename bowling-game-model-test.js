@@ -6,26 +6,27 @@ var BABBEL;
 BABBEL = BABBEL || {};
 
 (function() {
-  
+
   "use strict";
-  
+
   // Test objects
   var bowling_game, players, player, frame, failures, successes, missing;
-  
+
   // Player names for test
   players = ['Marge', 'Homer'];
-  
+
   failures = 0;
   successes = 0;
   missing = 0;
-  
+
   // Test helper
+
   function it_should(title, test_method) {
-    
+
     bowling_game = new BABBEL.BowlingGameModel(players);
     player = bowling_game.players[0];
     frame = player.frames[0];
-    
+
     if (!title) {
       if (window.console) {
         window.console.warn("Missing: it should " + title);
@@ -42,18 +43,18 @@ BABBEL = BABBEL || {};
       }
       failures++;
     }
-    
+
   }
-  
+
   if (window.console) {
     window.console.log("Testing...");
   }
-  
+
   /*
     BowlingGameModel
   */
   (function bowling_game_model_test() {
-    
+
     /*
       new()
     */
@@ -94,16 +95,16 @@ BABBEL = BABBEL || {};
     it_should("proceed to the next roll", function() {
       bowling_game.next();
       return bowling_game.current_player.index() === 0 &&
-             bowling_game.current_frame.index() === 0 &&
-             bowling_game.current_roll.index() === 1;
+        bowling_game.current_frame.index() === 0 &&
+        bowling_game.current_roll.index() === 1;
     });
 
     it_should("proceed to the next player", function() {
       bowling_game.next();
       bowling_game.next();
       return bowling_game.current_player.index() === 1 &&
-             bowling_game.current_frame.index() === 0 &&
-             bowling_game.current_roll.index() === 0;
+        bowling_game.current_frame.index() === 0 &&
+        bowling_game.current_roll.index() === 0;
     });
 
     it_should("proceed to the next frame", function() {
@@ -112,8 +113,8 @@ BABBEL = BABBEL || {};
       bowling_game.next();
       bowling_game.next();
       return bowling_game.current_player.index() === 0 &&
-             bowling_game.current_frame.index() === 1 &&
-             bowling_game.current_roll.index() === 0;
+        bowling_game.current_frame.index() === 1 &&
+        bowling_game.current_roll.index() === 0;
     });
 
     /*
@@ -123,28 +124,32 @@ BABBEL = BABBEL || {};
     it_should("proceed to the next roll", function() {
       bowling_game.set_score(5);
       return bowling_game.current_player.index() === 0 &&
-             bowling_game.current_frame.index() === 0 &&
-             bowling_game.current_roll.index() === 1;
+        bowling_game.current_frame.index() === 0 &&
+        bowling_game.current_roll.index() === 1;
     });
 
     it_should("proceed to the next player if a strike has been scored", function() {
       bowling_game.set_score(10);
       return bowling_game.current_player.index() === 1 &&
-             bowling_game.current_frame.index() === 0 &&
-             bowling_game.current_roll.index() === 0;
+        bowling_game.current_frame.index() === 0 &&
+        bowling_game.current_roll.index() === 0;
     });
-    
+
     /*
       winner()
     */
     it_should("return the winner", function() {
       // Mock score
-      bowling_game.players[0].score = function() { return 100; };
-      bowling_game.players[1].score = function() { return 130; };
+      bowling_game.players[0].score = function() {
+        return 100;
+      };
+      bowling_game.players[1].score = function() {
+        return 130;
+      };
       bowling_game.finished = true;
       return bowling_game.winner() === bowling_game.players[1];
     });
-    
+
     /*
       roll()
     */
@@ -152,13 +157,13 @@ BABBEL = BABBEL || {};
       var score = bowling_game.roll();
       return score >= 0 && score <= 10;
     });
-    
+
     it_should("return a value between 0 and 5 in the second roll", function() {
       bowling_game.set_score(5);
       var score = bowling_game.roll();
       return score >= 0 && score <= 5;
     });
-    
+
     /*
       run()
     */
@@ -166,7 +171,7 @@ BABBEL = BABBEL || {};
       bowling_game.run();
       return bowling_game.finished;
     });
-    
+
     /*
       reset()
     */
@@ -174,9 +179,9 @@ BABBEL = BABBEL || {};
       bowling_game.reset();
       return !bowling_game.finished;
     });
-    
+
     return bowling_game_model_test;
-    
+
   }());
 
 
@@ -184,37 +189,37 @@ BABBEL = BABBEL || {};
     Player
   */
   (function player_test() {
-  
+
     /*
       index()
     */
     it_should("return the index of the player", function() {
       return player.index() === 0;
     });
-  
+
     /*
       score()
     */
     it_should("return the initial score for the player", function() {
       return player.score() === 0;
     });
-    
+
     it_should("return the score for the player after a score of 5", function() {
       bowling_game.set_score(5);
       return player.score() === 5;
     });
-    
+
     it_should("return the score for the player after a strike", function() {
       bowling_game.set_score(10);
       return player.score() === 10;
     });
-    
+
     it_should("return the score for the player after roll 2", function() {
       bowling_game.set_score(5);
       bowling_game.set_score(1);
       return player.score() === 6;
     });
-    
+
     it_should("return the score for the player after frame 2", function() {
       bowling_game.set_score(5); // Player 1
       bowling_game.set_score(1); // Player 1
@@ -224,9 +229,9 @@ BABBEL = BABBEL || {};
       bowling_game.set_score(2); // Player 1
       return player.score() === 15;
     });
-    
+
     return player_test;
-    
+
   }());
 
 
@@ -242,18 +247,18 @@ BABBEL = BABBEL || {};
       frame.add_roll();
       return frame.rolls.length === 3;
     });
-  
+
     /*
       is_last()
     */
     it_should("return false for the first frame", function() {
       return !player.frames[0].is_last();
     });
-    
+
     it_should("return true for the last frame", function() {
       return player.frames[BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1].is_last();
     });
-  
+
     /*
       strike()
     */
@@ -262,19 +267,19 @@ BABBEL = BABBEL || {};
       frame.rolls[1].score = 3;
       return !frame.strike();
     });
-    
+
     it_should("return false for a spare", function() {
       frame.rolls[0].score = 6;
       frame.rolls[1].score = 4;
       return !frame.strike();
     });
-    
+
     it_should("return true for a strike", function() {
       frame.rolls[0].score = 10;
       frame.rolls[1].score = 0;
       return frame.strike();
     });
-    
+
     /*
       spare()
     */
@@ -283,56 +288,56 @@ BABBEL = BABBEL || {};
       frame.rolls[1].score = 3;
       return !frame.spare();
     });
-    
+
     it_should("return false for a strike", function() {
       frame.rolls[0].score = 10;
       frame.rolls[1].score = 0;
       return !frame.spare();
     });
-    
+
     it_should("return true for a spare", function() {
       frame.rolls[0].score = 4;
       frame.rolls[1].score = 6;
       return frame.spare();
     });
-    
+
     /*
       next_frame()
     */
     it_should("return the next frame", function() {
       return frame.next_frame() === frame.player.frames[frame.index() + 1];
     });
-    
+
     it_should("return null if the last frame has been reached", function() {
       frame = player.frames[BABBEL.BowlingGameModel.NUMBER_OF_FRAMES - 1];
       return frame.next_frame() === null;
     });
-    
+
     /*
       score()
     */
     it_should("return 0 if the frame has not been played", function() {
       return frame.score() === 0;
     });
-    
+
     it_should("return 7 if the frame score is 3 and 4", function() {
       frame.rolls[0].score = 3;
       frame.rolls[1].score = 4;
       return frame.score() === 7;
     });
-    
+
     it_should("return 10 if the frame is a strike and the next frame has not been played", function() {
       frame.rolls[0].score = 10;
       frame.rolls[1].score = 0;
       return frame.score() === 10;
     });
-    
+
     it_should("return 10 if the frame is a spare and the next frame has not been played", function() {
       frame.rolls[0].score = 4;
       frame.rolls[1].score = 6;
       return frame.score() === 10;
     });
-    
+
     it_should("return 15 if the frame is a strike and the next frame scored 2 and 3 points", function() {
       frame.rolls[0].score = 10;
       frame.rolls[1].score = 0;
@@ -340,7 +345,7 @@ BABBEL = BABBEL || {};
       frame.next_frame().rolls[1].score = 3;
       return frame.score() === 15;
     });
-    
+
     it_should("return 12 if the frame is a spare and the next frame scored 2 and 3 points", function() {
       frame.rolls[0].score = 4;
       frame.rolls[1].score = 6;
@@ -348,9 +353,9 @@ BABBEL = BABBEL || {};
       frame.next_frame().rolls[1].score = 3;
       return frame.score() === 12;
     });
-    
+
     return frame_test;
-    
+
   }());
 
   /*
@@ -361,18 +366,18 @@ BABBEL = BABBEL || {};
     it_should("return 0 for the first roll's index", function() {
       return frame.rolls[0].index() === 0;
     });
-    
+
     it_should("return 1 for the second roll's index", function() {
       return frame.rolls[1].index() === 1;
     });
-    
+
     return roll_test;
-    
+
   }());
-  
+
   // Finish test
   if (window.console) {
-    window.console.log(successes + " successes, " + failures + " failures, " +  missing + " missing.");
+    window.console.log(successes + " successes, " + failures + " failures, " + missing + " missing.");
   }
-  
+
 }());
