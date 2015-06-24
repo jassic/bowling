@@ -1,7 +1,13 @@
-var BABBEL = BABBEL || {};
+/*jslint white: true */
+/*jslint indent: 2 */
+/*jslint plusplus: true */
+var BABBEL;
+BABBEL = BABBEL || {};
 
 // class BowlingGameController
 BABBEL.BowlingGameController = (function() {
+  
+  "use strict";
   
   // Constructor
   function BowlingGameController(model, view) {
@@ -23,29 +29,29 @@ BABBEL.BowlingGameController = (function() {
     // Bind elements
     this.bind();
     
-  }
+  };
   
   // Bind elements
   BowlingGameController.prototype.bind = function() {
     
     // Bind input text field
-    this.view.input.onkeyup = function(view) {
+    this.view.input.onkeyup = (function(view) {
       return function(e) {
         view.score_entered(e);
         view.render();
       };
-    }(this.view);
+    }(this.view));
     
     // Bind demo button
-    this.view.demo.onclick = function(view) {
-      return function(e) {
+    this.view.demo.onclick = (function(view) {
+      return function() {
         view.bowling_game.run();
         view.render();
       };
-    }(this.view);
+    }(this.view));
     
-  }
+  };
   
   return BowlingGameController;
   
-})();
+}());

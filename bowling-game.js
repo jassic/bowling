@@ -1,7 +1,13 @@
-var BABBEL = BABBEL || {};
+/*jslint white: true */
+/*jslint indent: 2 */
+/*jslint plusplus: true */
+var BABBEL;
+BABBEL = BABBEL || {};
 
 // class BowlingGame
 BABBEL.BowlingGame = (function() {
+  
+  "use strict";
   
   // Constructor
   function BowlingGame(player_names, selector) {
@@ -14,4 +20,4 @@ BABBEL.BowlingGame = (function() {
   
   return BowlingGame;
   
-})();
+}());
